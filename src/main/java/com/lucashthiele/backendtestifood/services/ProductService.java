@@ -42,6 +42,7 @@ public class ProductService {
         product.setTitle(productData.title());
         product.setDescription(productData.description());
         product.setPrice(productData.price());
+        product.setCategory(getCategoryOrThrow(productData.categoryId()));
         product.setOwnerId(productData.ownerId());
 
         productRepository.save(product);
