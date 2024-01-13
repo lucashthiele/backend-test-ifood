@@ -16,15 +16,8 @@ public class CategoryService {
     private CategoryRepository categoryRepository;
 
     public Category create(CategoryDTO categoryData){
-        var category = new Category(
-                null,
-                categoryData.title(),
-                categoryData.description(),
-                categoryData.ownerId()
-        );
-
+        var category = new Category(categoryData);
         categoryRepository.save(category);
-
         return category;
     }
 
