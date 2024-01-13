@@ -19,4 +19,11 @@ public class Product {
     private Double price;
     private Category category;
     private Integer ownerId;
+
+    public Product(ProductDTO productData) {
+        this.title = productData.title();
+        this.description = productData.description();
+        this.price = productData.price();
+        this.ownerId = productData.ownerId();
+    }
 }
