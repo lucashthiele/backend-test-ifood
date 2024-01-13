@@ -29,7 +29,7 @@ public class ProductService {
     }
 
     private Category getCategoryOrThrow(String categoryId) {
-        return categoryRepository.findById(categoryId).orElseThrow(() -> new CategoryNotFoundException("Categoria não encontrada"));
+        return categoryRepository.findById(categoryId).orElseThrow(CategoryNotFoundException::new);
     }
 
     public List<Product> getAllProducts() {
@@ -50,7 +50,7 @@ public class ProductService {
     }
 
     private Product getProductOrThrow(String id) {
-        return productRepository.findById(id).orElseThrow(() -> new ProductNotFoundException("Produto não encontrado"));
+        return productRepository.findById(id).orElseThrow(ProductNotFoundException::new);
     }
 
     public void delete(String id){

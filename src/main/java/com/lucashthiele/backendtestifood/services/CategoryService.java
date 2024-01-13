@@ -37,7 +37,7 @@ public class CategoryService {
     }
 
     private Category getCategoryOrThrow(String id) {
-        return categoryRepository.findById(id).orElseThrow(() -> new CategoryNotFoundException("Categoria não encontrada"));
+        return categoryRepository.findById(id).orElseThrow(CategoryNotFoundException::new);
     }
 
     public void delete(String id){
