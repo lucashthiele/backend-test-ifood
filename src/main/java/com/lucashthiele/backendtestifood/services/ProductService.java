@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.function.Supplier;
 
 @Service
 public class ProductService {
@@ -20,11 +19,14 @@ public class ProductService {
     private ProductRepository productRepository;
     @Autowired
     private CategoryRepository categoryRepository;
+    @Autowired
+    private SqsMessageSenderService sqsMessageSender;
 
     public Product create(ProductDTO productData){
         var product = new Product(productData);
         product.setCategory(getCategoryOrThrow(productData.categoryId()));
         productRepository.save(product);
+        sendUpdateCatalogMessage(product.getOwnerId());
         return product;
     }
 
@@ -46,6 +48,7 @@ public class ProductService {
         product.setOwnerId(productData.ownerId());
 
         productRepository.save(product);
+        sendUpdateCatalogMessage(product.getOwnerId());
         return product;
     }
 
@@ -55,5 +58,10 @@ public class ProductService {
 
     public void delete(String id){
         productRepository.deleteById(id);
+        sendUpdateCatalogMessage(getProductOrThrow(id).getOwnerId());
+    }
+
+    private void sendUpdateCatalogMessage(Integer ownerId){
+        sqsMessageSender.sendMessage(ownerId.toString());
     }
 }
